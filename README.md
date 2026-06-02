@@ -1,13 +1,13 @@
 # 1Password for VS Code
 
-1Password for VS Code provides you with a set of tools to integrate your development workflow with 1Password, powered by the [1Password CLI](https://developer.1password.com/docs/cli).
+1Password for VS Code provides you with a set of tools to integrate your development workflow with 1Password, powered by the [1Password JavaScript SDK](https://github.com/1Password/onepassword-sdk-js).
 
 ## Quick start
 
 ⚡️ This quick start guide will get you up and running with the extension.
 
-1. **Set up the CLI** - v2.4.0 or greater of the 1Password CLI needs to be [installed on your system](https://developer.1password.com/docs/cli/get-started#install).
-2. **Enable biometric unlock** - You must have [biometric unlock](https://developer.1password.com/docs/cli/about-biometric-unlock) enabled. If you don't have a biometric device, you'll still be able to use your device user password.
+1. **Install the 1Password desktop app** - The extension authenticates through the [1Password desktop app](https://1password.com/downloads), so make sure it's [installed and unlocked](https://developer.1password.com/docs/sdks/setup-authentication/#desktop-app-integration).
+2. **Enable biometric unlock** - You must have [biometric unlock](https://support.1password.com/biometric-unlock/) enabled in the desktop app. If you don't have a biometric device, you'll still be able to use your device user password.
 3. **Install the extension** - From the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=1Password.op-vscode) or [GitHub](https://github.com/1Password/op-vscode/releases) install the latest version of the extension.
 4. **Follow the prompts** - You'll be prompted to choose a 1Password account and vault. Follow these prompts to finish setup of the extension.
 
