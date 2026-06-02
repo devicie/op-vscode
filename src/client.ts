@@ -95,7 +95,7 @@ export class OnePassword {
 		}
 
 		const message =
-			"Couldn't connect to the 1Password desktop app. Make sure it's installed and unlocked, and that app integration is enabled in the app's Settings → Developer.";
+			"Couldn't connect to the 1Password desktop app. Make sure it's installed and unlocked, then turn on \"Integrate with other apps\" under Settings → Developer in the 1Password app.";
 		logger.logError(message);
 
 		if (!showError && this.appIntegrationErrorNotified) {
