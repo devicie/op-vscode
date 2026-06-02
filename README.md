@@ -6,10 +6,12 @@
 
 ⚡️ This quick start guide will get you up and running with the extension.
 
-1. **Install the 1Password desktop app** - The extension authenticates through the [1Password desktop app](https://1password.com/downloads), so make sure it's [installed and unlocked](https://developer.1password.com/docs/sdks/setup-authentication/#desktop-app-integration).
-2. **Enable biometric unlock** - You must have [biometric unlock](https://support.1password.com/biometric-unlock/) enabled in the desktop app. If you don't have a biometric device, you'll still be able to use your device user password.
-3. **Install the extension** - From the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=1Password.op-vscode) or [GitHub](https://github.com/1Password/op-vscode/releases) install the latest version of the extension.
-4. **Follow the prompts** - You'll be prompted to choose a 1Password account and vault. Follow these prompts to finish setup of the extension.
+<!-- https://github.com/1Password/onepassword-sdk-js#option-1-1password-desktop-app -->
+1. **Install the desktop app** - Install the [1Password desktop app](https://1password.com/downloads/) and sign in to your account in the app.
+2. **Open Developer Settings** - Select your account or collection at the top of the sidebar, then navigate to **Settings > Developer**.
+3. **Enable integration** - Under Integrate with the 1Password SDKs, select **Integrate with other apps**.
+4. **Install the extension** - From the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=1Password.op-vscode) or [GitHub](https://github.com/1Password/op-vscode/releases) install the latest version of the extension.
+5. **Follow the prompts** - You'll be prompted to choose a 1Password account and vault. Follow these prompts to finish setup of the extension.
 
 You're all set. Learn more about what the extension is capable of by checking out the [developer portal documentation](https://developer.1password.com/docs/vscode/).
 
