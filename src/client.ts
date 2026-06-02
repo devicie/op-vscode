@@ -1,6 +1,8 @@
 import { Client, createClient, DesktopAuth, Item } from "@1password/sdk";
+import { default as open } from "open";
 import { window } from "vscode";
 import { version } from "../package.json";
+import { URLS } from "./constants";
 import { logger } from "./logger";
 import { endWithPunctuation } from "./utils";
 
@@ -31,6 +33,10 @@ export const createErrorHandler =
 export class OnePassword {
 	private client?: Client;
 	private accountName?: string;
+	// The desktop app integration error is a one-time setup problem, so we
+	// surface it even on otherwise-quiet paths but only notify once until the
+	// account changes or a client connects.
+	private appIntegrationErrorNotified = false;
 
 	public get authenticated(): boolean {
 		return Boolean(this.client);
@@ -42,6 +48,7 @@ export class OnePassword {
 		if (this.accountName !== accountName) {
 			this.accountName = accountName;
 			this.client = undefined;
+			this.appIntegrationErrorNotified = false;
 		}
 	}
 
@@ -60,12 +67,48 @@ export class OnePassword {
 				integrationName: INTEGRATION_NAME,
 				integrationVersion: version,
 			});
+			this.appIntegrationErrorNotified = false;
 		} catch (error) {
-			await createErrorHandler(showError)(error as Error);
+			await this.handleError(error as Error, showError);
 			this.client = undefined;
 		}
 
 		return this.client;
+	}
+
+	// The SDK throws "Native library is not available." when it can't talk to
+	// the 1Password desktop app — almost always because the app isn't running,
+	// is locked, or doesn't have app integration enabled. Surface that with a
+	// clear, actionable notification instead of the raw SDK message.
+	private isAppIntegrationError(error: Error): boolean {
+		const message = error?.message ?? "";
+		return (
+			message.includes("Native library is not available") ||
+			message.includes("1Password desktop application")
+		);
+	}
+
+	private async handleError(error: Error, showError: boolean): Promise<void> {
+		if (!this.isAppIntegrationError(error)) {
+			await createErrorHandler(showError)(error);
+			return;
+		}
+
+		const message =
+			"Couldn't connect to the 1Password desktop app. Make sure it's installed and unlocked, and that app integration is enabled in the app's Settings → Developer.";
+		logger.logError(message);
+
+		if (!showError && this.appIntegrationErrorNotified) {
+			return;
+		}
+
+		this.appIntegrationErrorNotified = true;
+
+		const learnMore = "Learn more";
+		const response = await window.showErrorMessage(message, learnMore);
+		if (response === learnMore) {
+			await open(URLS.DESKTOP_APP_DOCS);
+		}
 	}
 
 	public async isInvalid(): Promise<boolean> {
@@ -84,7 +127,7 @@ export class OnePassword {
 		try {
 			return await command(client);
 		} catch (error) {
-			await createErrorHandler(showError)(error as Error);
+			await this.handleError(error as Error, showError);
 			return undefined;
 		}
 	}
